@@ -1,7 +1,7 @@
 import pygame
-from player import Player
-from game_map import GameMap
-from engine.raycaster import Raycaster
+from Player import Player
+from Map import GameMap
+from engine.Raycaster import Raycaster
 
 pygame.init()
 
