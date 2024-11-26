@@ -26,3 +26,9 @@ class SprinteObject:
         pos = self.screen_x - self.sprite_half_width, HALF_HEIGHT - proj_height // 2 + height_shift
 
         self.game.raycasting.objects_to_render.append((self.norm_dist, image, pos))
+
+    def get_sprite(self):
+        dx = self.x - self.player.x
+        dy = self.y -self.player.y
+        self.dx,self.dy = dx, dy
+        self.theta = math.atan2(dy,dx)
