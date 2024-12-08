@@ -1,27 +1,42 @@
-import pygame
-from Player import Player
-from Map import GameMap
-from engine.Raycaster import Raycaster
+import pygame as pg
+import sys
+from settings import *
+#from Map import *
+from Player import *
+from Weapon import *
+#from engine.Raycaster import *
+#from sprite_object import *
+class Game :
+    def __init__(self):
+        pg.init()
+        self.new_game()
+        self.delta_time = 1
+        self.screen = pg.display.set_mode(RES)
 
-pygame.init()
+    def new_game(self):
+        self.player = Player(self)
+        self.weapon = Weapon(self)
+    
+    def update(self):
+        self.player.update()
+        self.player.movement()
+        pg.display.flip()
+    
+    def check_events(self):
+        for event in pg.event.get():
+            if event.type == pg.QUIT or (event.type== pg.K_ESCAPE):
+                pg.quit()
+                sys.exit()
 
-#setting up the screen
-width, height = 800,600
-screen = pygame.display.set_mode((width,height))
-pygame.display.set_caption("Snake Doom")
+    def run(self):
+        while True:
+            print ("")
+            self.check_events()
+            self.update()
 
-#initializing
-clock = pygame.time.Clock()
-player = Player(x = 100, y = 100, angle = 0)
-game_map = GameMap()
-raycaster = Raycaster(screen, player, game_map)
+    def draw(self):
+        self.weapon.draw()
 
-#main loop
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-
-        screen.fill((0,0,0))
-        
+if __name__ == '__main__':
+    game = Game()
+    game.run()
