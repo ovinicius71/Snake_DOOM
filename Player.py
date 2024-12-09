@@ -8,6 +8,7 @@ class Player:
         self.x,self.y = PLAYER_POS
         self.angle = PLAYER_ANGLE
         self.health = PLAYER_MAX_HEALTH
+        self.player_walk = False
 
     def movement (self):
         sin_a = math.sin(self.angle)
@@ -23,18 +24,22 @@ class Player:
             num_key_pressed += 1
             dx += speed_cos
             dy += speed_sin
+            self.player_walk = True
         if keys [pg.K_s]:
             num_key_pressed += 1
             dx -= speed_cos 
             dy -= speed_sin
+            self.player_walk = True
         if keys [pg.K_a]:
             num_key_pressed +=1
             dx += speed_cos
             dy -= speed_sin
+            self.player_walk = True
         if keys [pg.K_d]:
             num_key_pressed +=1
             dx -= speed_cos
             dy += speed_sin
+            self.player_walk = True
 
     def update(self):
         self.movement()
