@@ -55,10 +55,10 @@ class Game:
 
     def draw(self):
         self.screen.fill((20, 20, 20))  
-        self.weapon.draw()
-        self.object_render.draw()
-        self.player.draw()  
-        pg.display.flip()   
+        self.object_render.draw()       
+        self.player.draw()              
+        self.weapon.draw()              
+        pg.display.flip()    
 
 if __name__ == '__main__':  
     game = Game()
