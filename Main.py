@@ -4,6 +4,9 @@ from settings import *
 from Player import *
 from Weapon import *
 from animate_sprite import *
+from Map import *
+from raycasting import *
+from object_render import *
 
 pg.init()
 
@@ -23,11 +26,15 @@ class Game:
     def new_game(self):
         self.player = Player(self)  
         self.weapon = Weapon(self)  
+        self.map = Map(self)
+        self.object_render = object_render(self)
+        self.raycasting = raycaster(self)
 
     def update(self):
         self.player.update()
         self.player.movement()
         self.weapon.update()
+        self.raycasting.update()
 
     def check_events(self):
         self.triggerGlobal = False
@@ -49,6 +56,7 @@ class Game:
     def draw(self):
         self.screen.fill((20, 20, 20))  
         self.weapon.draw()
+        self.object_render.draw()
         self.player.draw()  
         pg.display.flip()   
 

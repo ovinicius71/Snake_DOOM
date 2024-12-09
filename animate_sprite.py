@@ -31,14 +31,12 @@ class animate_sprite:
         self.animation_trigger = False
         time_now = pg.time.get_ticks()
         if time_now - self.animation_time_pr > self.animation_time:
-            print("entrou")
             self.animation_time_pr = time_now
             self.animation_trigger = True
 
     def get_image(self, path):
         images = deque()
         for file_name in os.listdir(path):
-            print (file_name)
             if os.path.isfile(os.path.join(path, file_name)):
                 img = pg.image.load(path + '/' + file_name).convert_alpha()
                 images.append(img)
