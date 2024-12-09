@@ -14,7 +14,6 @@ class raycaster:
         for ray, values in enumerate(self.ray_result):
             depth, proj_height, texture, offset = values
 
-            # Renderização com projeção
             if proj_height < HEIGHT:
                 wall_column = self.textures[texture].subsurface(
                     offset * (TEXTURE_SIZE - SCALE), 0, SCALE, TEXTURE_SIZE
@@ -31,7 +30,6 @@ class raycaster:
 
             # Corrigir para adicionar como tupla
             self.objects_render.append((depth, wall_column, wall_pos))
-            print(f"Adicionado objeto: depth={depth}, pos={wall_pos}")
             
     def ray_cast(self):
         self.ray_result = []
@@ -84,7 +82,6 @@ class raycaster:
                 depth, texture = depth_hor, hor_tex
                 offset = (1 - x_h % 1) if sin_a > 0 else x_h % 1
 
-            # Remoção do efeito "fisheye"
             depth *= math.cos(self.game.player.angle - ray_angle)
 
             # Projeção

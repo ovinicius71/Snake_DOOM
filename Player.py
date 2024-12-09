@@ -45,7 +45,6 @@ class Player:
             self.y += dy
 
     def check_wall_collision(self, dx, dy):
-        """Verifica colisões com as paredes no mapa."""
         new_x = self.x + dx
         new_y = self.y + dy
 
@@ -56,29 +55,24 @@ class Player:
         return (grid_x, grid_y) in self.game.map.world_map
 
     def update(self):
-        """Atualiza o estado do jogador."""
         self.movement()
         self.mouse_control()
 
     @property
     def pos(self):
-        """Retorna a posição do jogador como uma tupla."""
         return self.x, self.y
 
     @property
     def map_pos(self):
-        """Retorna a posição do jogador no mapa."""
         return int(self.x), int(self.y)
 
     def single_fire(self, event):
-        """Gerencia o disparo único."""
         if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
             if not self.shot and not self.game.weapon.reload:
                 self.shot = True
                 self.game.weapon.reload = True
 
     def draw(self):
-        """Desenha o jogador e sua direção."""
         pg.draw.line(
             self.game.screen,
             'yellow',
@@ -90,7 +84,6 @@ class Player:
         pg.draw.circle(self.game.screen, 'green', (self.x * 100, self.y * 100), 15)
 
     def mouse_control(self):
-        """Gerencia o controle do mouse para a câmera."""
         mx, my = pg.mouse.get_pos()
 
         # Recentralizar o cursor se ultrapassar os limites
