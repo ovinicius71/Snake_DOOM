@@ -14,6 +14,7 @@ class raycaster:
         for ray, values in enumerate(self.ray_result):
             depth, proj_height, texture, offset = values
 
+            # Renderização com projeção
             if proj_height < HEIGHT:
                 wall_column = self.textures[texture].subsurface(
                     offset * (TEXTURE_SIZE - SCALE), 0, SCALE, TEXTURE_SIZE
@@ -28,7 +29,9 @@ class raycaster:
                 wall_column = pg.transform.scale(wall_column, (SCALE, HEIGHT))
                 wall_pos = (ray * SCALE, 0)
 
-            self.objects_render.append((depth, wall_column, wall_pos))  # Corrigir para tupla
+            # Corrigir para adicionar como tupla
+            self.objects_render.append((depth, wall_column, wall_pos))
+            print(f"Adicionado objeto: depth={depth}, pos={wall_pos}")
             
     def ray_cast(self):
         self.ray_result = []
@@ -89,9 +92,9 @@ class raycaster:
 
             # Resultado do raycasting
             self.ray_result.append((depth, proj_height, texture, offset))
+            
 
             ray_angle += DELTA_ANGLE
-
 
     def update(self):
         self.ray_cast()
