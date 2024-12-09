@@ -51,9 +51,9 @@ class Player:
     def map_pos(self):
         return int(self.x), int(self.y)
     
-    def singleFire (self,event):
-        if event.type == pg.K_SPACE:
-            if event.button == 1 and not self.shot and not self.game.weapon.reload:
+    def singleFire(self, event):
+        if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:  # Verifica apenas teclas pressionadas
+            if not self.shot and not self.game.weapon.reload:
                 self.shot = True
                 self.game.weapon.reload = True
     

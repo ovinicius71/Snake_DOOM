@@ -15,6 +15,7 @@ class Game:
         pg.display.set_caption("Game")         
         self.new_game()
         self.delta_time = 1
+        self.clock = pg.time.Clock()
         pg.event.set_grab(True)
         self.triggerGlobal = False
         self.globalEvent = pg.USEREVENT + 0
@@ -26,6 +27,7 @@ class Game:
     def update(self):
         self.player.update()
         self.player.movement()
+        self.weapon.update()
 
     def check_events(self):
         self.triggerGlobal = False
@@ -42,6 +44,7 @@ class Game:
             self.check_events()
             self.update()
             self.draw()
+            self.clock.tick(60)
 
     def draw(self):
         self.screen.fill((20, 20, 20))  
