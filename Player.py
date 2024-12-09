@@ -9,6 +9,7 @@ class Player:
         self.angle = PLAYER_ANGLE
         self.health = PLAYER_MAX_HEALTH
         self.player_walk = False
+        self.shot = False
 
     def movement (self):
         sin_a = math.sin(self.angle)
@@ -49,6 +50,12 @@ class Player:
     
     def map_pos(self):
         return int(self.x), int(self.y)
+    
+    def singleFire (self,event):
+        if event.type == pg.K_SPACE:
+            if event.button == 1 and not self.shot and not self.game.weapon.reload:
+                self.shot = True
+                self.game.weapon.reload = True
     
     def draw(self):
         pg.draw.line(self.game.screen, 'yellow', (self.x * 100, self.y * 100),

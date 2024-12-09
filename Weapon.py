@@ -1,28 +1,35 @@
 import pygame as pg
 from collections import deque
 from Player import *
+from animate_sprite import *
 
 # Constantes
 HALF_WIDTH = 960
 HEIGHT = 1450
 
-class Weapon:
-    def __init__(self, game, path='assets/sprites/weapon/shotgun/0.png', scale=0.4):
-        self.game = game
-        self.scale = scale
-
-        # Carregar e converter a imagem
-        initial_image = pg.image.load(path).convert_alpha()  # Converter para 32 bits com transparência
-        scaled_image = pg.transform.smoothscale(
-            initial_image, 
-            (int(initial_image.get_width() * scale), int(initial_image.get_height() * scale))
+class Weapon(animate_sprite):
+    def __init__(self, game, path='assets/sprites/weapon/shotgun', pos=(HALF_WIDTH, HEIGHT), scale=0.4, animation_time=90):
+        super().__init__(game=game, path=path, pos=(0, 0), scale=scale, animation_time=animation_time)
+        self.weapon_pos = (
+            HALF_WIDTH - self.image.get_width() // 2,
+            HEIGHT - self.image.get_height()
         )
-        self.images = deque([scaled_image])  # Criar a deque com a imagem escalada
-        self.weapon_pos = (HALF_WIDTH - self.images[0].get_width() // 2, 
-                           HEIGHT - self.images[0].get_height())
-        self.num_images = len(self.images)
-    
-   
+        self.reload = False
 
     def draw(self):
-        self.game.screen.blit(self.images[0], self.weapon_pos)
+        scaled_image = pg.transform.smoothscale(
+            self.image,
+            (int(self.image.get_width() * self.scale), int(self.image.get_height() * self.scale))
+        )
+        self.game.screen.blit(scaled_image, self.weapon_pos)
+
+    def animation_shot(self):
+        if self.reload:
+            self.animate()
+            if not self.animation_trigger:  # Quando a animação termina
+                self.reload = False
+                self.game.player.shot = False
+
+    def update(self):
+        self.check_animation_time()
+        self.animation_shot()
