@@ -54,9 +54,9 @@ class Game:
             self.clock.tick(60)
 
     def draw(self):
-        self.screen.fill((20, 20, 20))  
-        self.object_render.draw()       
-        self.player.draw()              
+        self.screen.fill((20, 20, 20))       
+        self.player.draw()   
+        self.object_render.draw()             
         self.weapon.draw()              
         pg.display.flip()    
 
