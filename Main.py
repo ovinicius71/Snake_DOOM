@@ -7,6 +7,10 @@ from animate_sprite import *
 from Map import *
 from raycasting import *
 from object_render import *
+from npc import *
+from NPCs import *
+from object_manage import * 
+from bfs import *
 
 pg.init()
 
@@ -29,12 +33,15 @@ class Game:
         self.map = Map(self)
         self.object_render = object_render(self)
         self.raycasting = raycaster(self)
+        self.object_manager = object_manager(self)
+        self.bfs = BFS (self)
 
     def update(self):
         self.player.update()
         self.player.movement()
         self.weapon.update()
         self.raycasting.update()
+        self.object_manager.update()
 
     def check_events(self):
         self.triggerGlobal = False

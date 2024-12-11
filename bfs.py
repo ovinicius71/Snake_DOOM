@@ -5,7 +5,7 @@ class BFS :
     def __init__(self, game):
         self.game = game
         self.ways = [-1, 0], [0, -1], [1, 0], [0, 1], [-1, -1], [1, -1], [1, 1], [-1, 1]
-        self.map = game.map.min_map
+        self.map = game.map.mini_map
         self.graph = {}
         self.get_graph()
 
@@ -34,7 +34,7 @@ class BFS :
     def get_path (self, start, goal):
         self.visited = self.bfs(start, goal, self.graph)
         path = [goal]
-        step = self.visited.get[step]
+        step = self.visited.get(goal, start)
         
         #step by step wooo baby 
         while step and step != start:
