@@ -95,3 +95,7 @@ class Player:
         self.rel = max(-MOUSE_MAX_REL, min(MOUSE_MAX_REL, self.rel))
         self.angle += self.rel * MOUSE_SENSITIVITY * self.game.delta_time
         self.angle %= math.tau  # Normaliza o ângulo entre 0 e 2π
+
+    def get_damage(self, damage):
+        self.health -= damage
+        self.game.object_render.player_damage()

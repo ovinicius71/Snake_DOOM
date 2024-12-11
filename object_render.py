@@ -55,3 +55,6 @@ class object_render:
             4: self.get_texture('assets/textures/4.png'),
             5: self.get_texture('assets/textures/5.png'),
         }
+    
+    def player_damage(self):
+        self.screen.blit(self.blood_screen,(0,0))

@@ -17,6 +17,7 @@ class Weapon(animate_sprite):
         self.reload = False
         self.frame_counter = 0
         self.num_images = len(self.images)
+        self.damage = 20
 
     def draw(self):
         scaled_image = pg.transform.smoothscale(
