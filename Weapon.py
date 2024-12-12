@@ -8,7 +8,7 @@ HALF_WIDTH = 1200
 HEIGHT = 2055
 
 class Weapon(animate_sprite):
-    def __init__(self, game, path='assets/sprites/weapon/shotgun/', pos=(HALF_WIDTH, HEIGHT), scale=0.4, animation_time=90):
+    def __init__(self, game, path='assets/sprites/weapon/shotgun/0.png', pos=(HALF_WIDTH, HEIGHT), scale=0.4, animation_time=90):
         super().__init__(game=game, path=path, pos=(1200, 1900), scale=scale, animation_time=animation_time)
         self.weapon_pos = (
             HALF_WIDTH - self.image.get_width() // 2,
@@ -17,7 +17,7 @@ class Weapon(animate_sprite):
         self.reload = False
         self.frame_counter = 0
         self.num_images = len(self.images)
-        self.damage = 20
+        self.damage = 100
 
     def draw(self):
         scaled_image = pg.transform.smoothscale(

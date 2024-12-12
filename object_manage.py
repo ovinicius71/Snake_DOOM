@@ -93,7 +93,5 @@ class object_manager:
         Update the positions of NPCs and animated sprites.
         """
         self.npc_position = {npc.map_pos for npc in self.npc_list if npc.alive}  # Update NPC positions
-        for sprite in self.sprite_list:
-            sprite.update()
-        for npc in self.npc_list:
-            npc.update()
+        [sprite.update() for sprite in self.sprite_list]
+        [npc.update() for npc in self.npc_list]

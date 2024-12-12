@@ -3,20 +3,20 @@ from random import randint, random
 import math
 from settings import *
 
-class npc(animate_sprite) :
-    def __init__(self, game, path='assets/sprites/npc/soldier/0.png', pos=(10.5,5), scale=0.8, shift=0.38, animation_time=180):
+class npc(animate_sprite):
+    def __init__(self, game, path='assets/sprites/npc/soldier/0.png', pos=(10.5, 5), scale=0.8, shift=0.38, animation_time=180):
         super().__init__(game, path, pos, scale, shift, animation_time)
-        self.attack_image = self.get_image(self.path + '/attack')
-        self.death_image = self.get_image(self.path + '/death')
-        self.idle_image = self.get_image(self.path + '/idle')
-        self.pain_image = self.get_image(self.path + '/pain')
-        self.walk_image = self.get_image(self.path + '/walk')
-        self.attack_distance = randint(4,8)
+        self.attack_images = self.load_images(f'{self.path}/attack')
+        self.death_images = self.load_images(f'{self.path}/death')
+        self.idle_images = self.load_images(f'{self.path}/idle')
+        self.pain_images = self.load_images(f'{self.path}/pain')
+        self.walk_images = self.load_images(f'{self.path}/walk')
+        self.attack_distance = randint(4, 8)
         self.size = 20
         self.speed = 0.03
         self.attack_accuracy = 0.20
         self.health = 100
-        self.attack_damage = 20
+        self.attack_damage = 1
         self.pain = False
         self.alive = True
         self.ray_value = False
@@ -29,14 +29,14 @@ class npc(animate_sprite) :
         self.logic()
 
     def check_wall(self, x, y):
-        return (x,y) not in self.game.map.world_map
-    
-    def check_collision(self, dx, dy ):
-        if self.check_wall(int(self.x + dx * self.size), int (self.y)):
+        return (x, y) not in self.game.map.world_map
+
+    def check_collision(self, dx, dy):
+        if self.check_wall(int(self.x + dx * self.size), int(self.y)):
             self.x += dx
         if self.check_wall(int(self.x), int(self.y + dy * self.size)):
             self.y += dy
-    
+
     def attack(self):
         if self.animation_trigger:
             if random() < self.attack_accuracy:
@@ -44,20 +44,21 @@ class npc(animate_sprite) :
 
     def movement(self):
         next_pos = self.game.bfs.get_path(self.map_pos, self.game.player.map_pos)
-        next_x, next_y = next_pos
+        if not next_pos:
+            return
 
-        
+        next_x, next_y = next_pos
         if next_pos not in self.game.object_manager.npc_position:
             angle = math.atan2(next_y + 0.5 - self.y, next_x + 0.5 - self.x)
             dx = math.cos(angle) * self.speed
             dy = math.sin(angle) * self.speed
-            self.check_collision(dx, dy)    
+            self.check_collision(dx, dy)
 
     def animate_pain(self):
-        self.animate(self.pain_image)
+        self.animate(self.pain_images)
         if self.animation_trigger:
             self.pain = False
-        
+
     def check_hit(self):
         if self.ray_value and self.game.player.shot:
             if HALF_WIDTH - self.sprite_half_width < self.screen_x < HALF_WIDTH + self.sprite_half_width:
@@ -68,9 +69,9 @@ class npc(animate_sprite) :
 
     def animate_death(self):
         if not self.alive:
-            if self.game.global_trigger and self.frame_count < len(self.death_image) - 1:
-                self.death_image.rotate(-1)
-                self.images = self.death_image[0]
+            if self.game.global_trigger and self.frame_count < len(self.death_images) - 1:
+                self.death_images.append(self.death_images.popleft())
+                self.image = self.death_images[0]
                 self.frame_count += 1
 
     def logic(self):
@@ -80,32 +81,26 @@ class npc(animate_sprite) :
 
             if self.pain:
                 self.animate_pain()
-
             elif self.ray_value:
                 self.player_trigger = True
-
                 if self.dist < self.attack_distance:
-                    self.animate(self.attack_image)
-                    self.attack
-
+                    self.animate(self.attack_images)
+                    self.attack()
                 else:
-                    self.animate(self.walk_image)
+                    self.animate(self.walk_images)
                     self.movement()
-
             elif self.player_trigger:
-                self.animate(self.walk_image)
+                self.animate(self.walk_images)
                 self.movement()
-            
             else:
-                self.animate(self.idle_image)
-        
+                self.animate(self.idle_images)
         else:
             self.animate_death()
 
     @property
     def map_pos(self):
         return int(self.x), int(self.y)
-    
+
     def ray_player_npc(self):
         if self.game.player.map_pos == self.map_pos:
             return True
@@ -123,7 +118,6 @@ class npc(animate_sprite) :
 
         # horizontals
         y_hor, dy = (y_map + 1, 1) if sin_a > 0 else (y_map - 1e-6, -1)
-
         depth_hor = (y_hor - oy) / sin_a
         x_hor = ox + depth_hor * cos_a
 
@@ -144,7 +138,6 @@ class npc(animate_sprite) :
 
         # verticals
         x_vert, dx = (x_map + 1, 1) if cos_a > 0 else (x_map - 1e-6, -1)
-
         depth_vert = (x_vert - ox) / cos_a
         y_vert = oy + depth_vert * sin_a
 
@@ -169,12 +162,12 @@ class npc(animate_sprite) :
         if 0 < player_dist < wall_dist or not wall_dist:
             return True
         return False
-    
+
     def draw_ray_cast(self):
-        pg.draw.circle(self.game.screen, 'red', (100*self.x,100*self.y),15)
+        pg.draw.circle(self.game.screen, 'red', (100 * self.x, 100 * self.y), 15)
         if self.ray_player_npc():
-            pg.draw.line(self.game.screen, 'orange', (100*self.game.player.x, 100*self.game.player.y),(100*self.x, 100*self.y),2)
+            pg.draw.line(self.game.screen, 'orange', (100 * self.game.player.x, 100 * self.game.player.y), (100 * self.x, 100 * self.y), 2)
 
-
-        
-
+    def check_health(self):
+        if self.health <= 0:
+            self.alive = False

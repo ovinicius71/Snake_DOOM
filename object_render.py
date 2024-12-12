@@ -11,6 +11,8 @@ class object_render:
         self.digit_size = 50
         self.digit_image = [self.get_texture(f'assets/textures/digits/{i}.png', [self.digit_size] * 2) for i in range(11)]
         self.digit =dict(zip(map(str, range(11)), self.digit_image))
+        self.blood_screen = self.get_texture('assets/textures/blood_screen.png', RES)
+
 
     def draw(self):
         self.draw_background()
