@@ -19,8 +19,8 @@ class object_manager:
         self.anim_sprite_path = self.animated_path  # Alias for animated sprite path
 
         self.num_enemies = 30  # Number of enemies to spawn
-        self.weight = [60, 20, 20]  # Weight for NPC type probabilities
-        self.types_npc = [CacoDemonNPC, CyberDemonNPC, SoldierNPC]  # Types of NPCs
+        self.weight = [60, 20]  # Weight for NPC type probabilities
+        self.types_npc = [CacoDemonNPC, CyberDemonNPC]  # Types of NPCs
         self.restrict_area = {(i, j) for i in range(10) for j in range(10)}  # Restricted spawn area
         self.npc_position = {}  # Positions of all NPCs
 

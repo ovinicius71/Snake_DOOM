@@ -61,11 +61,19 @@ class npc(AnimatedSprite):
 
     def check_hit(self):
         if self.ray_value and self.game.player.shot:
+            print(f"Verificando hit no NPC. screen_x: {self.screen_x}, sprite_half_width: {self.sprite_half_width}")
             if HALF_WIDTH - self.sprite_half_width < self.screen_x < HALF_WIDTH + self.sprite_half_width:
+                print("NPC atingido pelo tiro do jogador.")
                 self.game.player.shot = False
                 self.pain = True
                 self.health -= self.game.weapon.damage
+                print(f"Dano aplicado: {self.game.weapon.damage}. Saúde restante do NPC: {self.health}")
                 self.check_health()
+            else:
+                print("Tiro fora do alcance do NPC.")
+        
+        elif self.game.player.shot:
+            print("O jogador não está atirando.")
 
     def animate_death(self):
         if not self.alive:
@@ -103,6 +111,7 @@ class npc(AnimatedSprite):
 
     def ray_player_npc(self):
         if self.game.player.map_pos == self.map_pos:
+            print("entreou map_pos")
             return True
 
         wall_v, wall_h = 0, 0
