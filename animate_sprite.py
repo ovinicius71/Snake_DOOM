@@ -1,76 +1,35 @@
 import pygame as pg
+from settings import *
 import os
 from collections import deque
-import math
-from settings import *
 
-class animate_sprite:
-    def __init__(self, game, path='assets/sprites/static_sprites/candlebra.png', pos=(11, 3), scale=0.5, shift=0.16, animation_time=120):
+
+class SpriteObject:
+    def __init__(self, game, path='assets/sprites/static_sprites/candlebra.png',
+                 pos=(10.5, 3.5), scale=0.7, shift=0.27):
         self.game = game
-        self.animation_time = animation_time
-        self.path = path
-        self.images = self.load_images(self.path)
-        if not self.images:
-            raise ValueError(f"No images found in path: {self.path}")
-        self.animation_time_prev = pg.time.get_ticks()
-        self.animation_trigger = False
-        self.pos = pos  # Animation position
-        self.scale = scale
-        self.shift = shift
-        self.x, self.y = pos
         self.player = game.player
+        self.x, self.y = pos
+        self.image = pg.image.load(path).convert_alpha()
         self.IMAGE_WIDTH = self.image.get_width()
         self.IMAGE_HALF_WIDTH = self.image.get_width() // 2
         self.IMAGE_RATIO = self.IMAGE_WIDTH / self.image.get_height()
+        self.dx, self.dy, self.theta, self.screen_x, self.dist, self.norm_dist = 0, 0, 0, 0, 1, 1
+        self.sprite_half_width = 0
         self.SPRITE_SCALE = scale
         self.SPRITE_HEIGHT_SHIFT = shift
 
-    def update(self):
-        self.check_animation_time()
-        self.animate(self.images)
-        self.get_sprite()
+    def get_sprite_projection(self):
+        proj = SCREEN_DIST / self.norm_dist * self.SPRITE_SCALE
+        proj_width, proj_height = proj * self.IMAGE_RATIO, proj
 
-    def animate(self, images):
-        if self.animation_trigger:
-            images.rotate(-1)  # Rotate the deque
-            self.image = self.images[0]  # Update the current image
+        image = pg.transform.scale(self.image, (proj_width, proj_height))
 
-    def check_animation_time(self):
-        self.animation_trigger = False
-        time_now = pg.time.get_ticks()
-        if time_now - self.animation_time_prev > self.animation_time:
-            self.animation_time_prev = time_now
-            self.animation_trigger = True
+        self.sprite_half_width = proj_width // 2
+        height_shift = proj_height * self.SPRITE_HEIGHT_SHIFT
+        pos = self.screen_x - self.sprite_half_width, HALF_HEIGHT - proj_height // 2 + height_shift
 
-    def load_images(self, path):
-        if os.path.isfile(path):
-            path = os.path.dirname(path)  # Ajusta para o diretório pai se for um arquivo
-
-        if not os.path.isdir(path):
-            raise NotADirectoryError(f"The path '{path}' is not a directory or does not exist.")
-
-        images = deque()
-        for file_name in sorted(os.listdir(path)):
-            full_path = os.path.join(path, file_name)
-            if os.path.isfile(full_path):
-                try:
-                    img = pg.image.load(full_path).convert_alpha()
-                    images.append(img)
-                except pg.error as e:
-                    print(f"Error loading image {full_path}: {e}")
-        if not images:
-            raise ValueError(f"No valid images found in directory: {path}")
-        return images
-
-
-
-    def draw(self):
-        screen_pos = (int(self.pos[0] * 100), int(self.pos[1] * 100))  # Scale position for screen
-        scaled_image = pg.transform.smoothscale(
-            self.image,
-            (int(self.image.get_width() * self.scale), int(self.image.get_height() * self.scale))
-        )
-        self.game.screen.blit(scaled_image, screen_pos)
+        self.game.raycasting.objects_render.append((self.norm_dist, image, pos))
 
     def get_sprite(self):
         dx = self.x - self.player.x
@@ -90,14 +49,41 @@ class animate_sprite:
         if -self.IMAGE_HALF_WIDTH < self.screen_x < (WIDTH + self.IMAGE_HALF_WIDTH) and self.norm_dist > 0.5:
             self.get_sprite_projection()
 
-    def get_sprite_projection(self):
-        proj = SCREEN_DIST / self.norm_dist * self.SPRITE_SCALE
-        proj_width, proj_height = proj * self.IMAGE_RATIO, proj
+    def update(self):
+        self.get_sprite()
 
-        image = pg.transform.scale(self.image, (int(proj_width), int(proj_height)))
 
-        self.sprite_half_width = proj_width // 2
-        height_shift = proj_height * self.SPRITE_HEIGHT_SHIFT
-        pos = self.screen_x - self.sprite_half_width, HALF_HEIGHT - proj_height // 2 + height_shift
+class AnimatedSprite(SpriteObject):
+    def __init__(self, game, path='assets/sprites/animated_sprites/green_light/0.png',
+                 pos=(11.5, 3.5), scale=0.8, shift=0.16, animation_time=120):
+        super().__init__(game, path, pos, scale, shift)
+        self.animation_time = animation_time
+        self.path = path.rsplit('/', 1)[0]
+        self.images = self.load_images(self.path)
+        self.animation_time_prev = pg.time.get_ticks()
+        self.animation_trigger = False
 
-        self.game.raycasting.objects_render.append((self.norm_dist, image, pos))
+    def update(self):
+        super().update()
+        self.check_animation_time()
+        self.animate(self.images)
+
+    def animate(self, images):
+        if self.animation_trigger:
+            images.rotate(-1)
+            self.image = images[0]
+
+    def check_animation_time(self):
+        self.animation_trigger = False
+        time_now = pg.time.get_ticks()
+        if time_now - self.animation_time_prev > self.animation_time:
+            self.animation_time_prev = time_now
+            self.animation_trigger = True
+
+    def load_images(self, path):
+        images = deque()
+        for file_name in os.listdir(path):
+            if os.path.isfile(os.path.join(path, file_name)):
+                img = pg.image.load(path + '/' + file_name).convert_alpha()
+                images.append(img)
+        return images

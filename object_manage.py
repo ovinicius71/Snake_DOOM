@@ -78,7 +78,7 @@ class object_manager:
         ]
 
         for pos in positions:
-            self.add_sprite(animate_sprite(self.game, pos=pos))
+            self.add_sprite(AnimatedSprite(self.game, pos=pos))
 
         # Add specific sprites with unique paths
         special_positions = [
@@ -86,7 +86,7 @@ class object_manager:
             (9.5, 20.5), (10.5, 20.5), (3.5, 14.5), (3.5, 18.5)
         ]
         for pos in special_positions:
-            self.add_sprite(animate_sprite(self.game, path=self.anim_sprite_path + 'red_light/0.png', pos=pos))
+            self.add_sprite(AnimatedSprite(self.game, path=self.anim_sprite_path + 'red_light/0.png', pos=pos))
 
     def update(self):
         """

@@ -4,27 +4,26 @@ from Player import *
 from animate_sprite import *
 
 # Constantes
-HALF_WIDTH = 1200
+HALF_WIDTH = 1250
 HEIGHT = 2055
 
-class Weapon(animate_sprite):
-    def __init__(self, game, path='assets/sprites/weapon/shotgun/0.png', pos=(HALF_WIDTH, HEIGHT), scale=0.4, animation_time=90):
-        super().__init__(game=game, path=path, pos=(1200, 1900), scale=scale, animation_time=animation_time)
+class Weapon(AnimatedSprite):
+    def __init__(self, game, path='assets/sprites/weapon/shotgun/0.png', scale=0.4, animation_time=90):
+        super().__init__(game=game, path=path, scale=scale, animation_time=animation_time)
         self.weapon_pos = (
             HALF_WIDTH - self.image.get_width() // 2,
             HEIGHT - self.image.get_height()
         )
+        self.images = deque(
+            [pg.transform.smoothscale(img, (self.image.get_width() * scale, self.image.get_height() * scale))
+             for img in self.images])
         self.reload = False
         self.frame_counter = 0
         self.num_images = len(self.images)
         self.damage = 100
 
     def draw(self):
-        scaled_image = pg.transform.smoothscale(
-            self.image,
-            (int(self.image.get_width() * self.scale), int(self.image.get_height() * self.scale))
-        )
-        self.game.screen.blit(scaled_image, self.weapon_pos)
+        self.game.screen.blit(self.images[0], self.weapon_pos)
 
     def animation_shot(self):
         if self.reload:
