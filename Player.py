@@ -69,7 +69,6 @@ class Player:
     def single_fire(self, event):
         if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
             if not self.shot and not self.game.weapon.reload:
-                print("atirou")
                 self.shot = True
                 self.game.weapon.reload = True
 
