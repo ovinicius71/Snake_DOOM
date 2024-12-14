@@ -62,6 +62,7 @@ class raycaster:
         for ray in range(NUM_RAYS):
             sin_a = math.sin(ray_angle)  # Sine of the ray angle.
             cos_a = math.cos(ray_angle)  # Cosine of the ray angle.
+            vert_tex, hor_tex = 1, 1
 
             # Horizontal intersection calculations.
             y_h, dy = (y_map + 1, 1) if sin_a > 0 else (y_map - 1e-6, -1)

@@ -26,6 +26,7 @@ class npc(AnimatedSprite):
     def update(self):
         self.check_animation_time()
         self.get_sprite()
+        self.check_health()
         self.logic()
 
     def check_wall(self, x, y):
@@ -77,7 +78,7 @@ class npc(AnimatedSprite):
 
     def animate_death(self):
         if not self.alive:
-            if self.game.global_trigger and self.frame_count < len(self.death_images) - 1:
+            if not self.game.triggerGlobal and self.frame_count < len(self.death_images) - 1:
                 self.death_images.append(self.death_images.popleft())
                 self.image = self.death_images[0]
                 self.frame_count += 1
@@ -111,7 +112,6 @@ class npc(AnimatedSprite):
 
     def ray_player_npc(self):
         if self.game.player.map_pos == self.map_pos:
-            print("entreou map_pos")
             return True
 
         wall_v, wall_h = 0, 0

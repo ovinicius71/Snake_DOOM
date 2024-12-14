@@ -39,9 +39,10 @@ class Game:
     def update(self):
         self.player.update()
         self.player.movement()
-        self.weapon.update()
         self.raycasting.update()
         self.object_manager.update()
+        self.weapon.update()
+        
 
     def check_events(self):
         self.triggerGlobal = False
