@@ -42,9 +42,14 @@ Create a Doom-inspired gaming experience using concepts from computer graphics a
 
 ```
 |-- assets/                # Resources like images and sounds
+|-- snake/                 # is the virtual environment
+|-- NPCs/                  # npc folder
+    |-- CacoDemonNPC.py    # is a npc game
+    |-- CyberDemonNPC.py   # is another npc
+    |-- soldierNPC.py      # more one npc
 |-- src/                   # Main source code
     |-- bsf.py             # BFS algorithm implementation
-    |-- bsp.py             # BSP tree implementation (dont create )
+    |-- bsp.py             # BSP tree implementation
     |-- raycasting.py      # Raycasting algorithm
     |-- map.py             # map game logic
     |-- main.py            # Game entry point
@@ -53,8 +58,9 @@ Create a Doom-inspired gaming experience using concepts from computer graphics a
     |-- Player.py          # Player algorithm
     |-- animate_sprite.py  # algorithm of animation
     |-- settings.py        # game settings
-    |-- Weapon.py          # Weapon logic 
-|-- README.md              # Project documentation
+    |-- Weapon.py          # Weapon logic
+    |-- object_manage.py   # algorithm of manage object (define positions...) 
+    |-- README.md          # its me
 ```
 
 ## Contributions
