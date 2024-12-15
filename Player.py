@@ -67,7 +67,7 @@ class Player:
         return int(self.x), int(self.y)
 
     def single_fire(self, event):
-        if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
+        if event.type == pg.MOUSEBUTTONDOWN:
             if not self.shot and not self.game.weapon.reload:
                 self.shot = True
                 self.game.weapon.reload = True
