@@ -1,7 +1,10 @@
 from animate_sprite import *
-from npc import *
+from NPC import *
 from random import choices, randrange
-from NPCs import CacoDemonNPC, CyberDemonNPC, SoldierNPC
+from NPCs.CacoDemonNPC import CacoDemonNPC
+from NPCs.CyberDemonNPC import CyberDemonNPC
+from NPCs.SoldierNPC import SoldierNPC
+
 
 class object_manager:
     def __init__(self, game):
@@ -17,10 +20,12 @@ class object_manager:
         self.static_path = 'assets/sprites/static_sprites/'  # Path to static sprites
         self.animated_path = 'assets/sprites/animated_sprites/'  # Path to animated sprites
         self.anim_sprite_path = self.animated_path  # Alias for animated sprite path
+        add_npc = self.add_npc 
+        add_sprite = self.add_sprite
 
         self.num_enemies = 30  # Number of enemies to spawn
-        self.weight = [60, 20]  # Weight for NPC type probabilities
-        self.types_npc = [CacoDemonNPC, CyberDemonNPC]  # Types of NPCs
+        self.weights = [70, 20, 10]  # Weight for NPC type probabilities
+        self.types_npc = [CacoDemonNPC, CyberDemonNPC, SoldierNPC]  # Types of NPCs
         self.restrict_area = {(i, j) for i in range(10) for j in range(10)}  # Restricted spawn area
         self.npc_position = {}  # Positions of all NPCs
 
@@ -54,7 +59,7 @@ class object_manager:
         Spawn a specified number of NPCs at random positions.
         """
         for _ in range(self.num_enemies):
-            npc_type = choices(self.types_npc, self.weight)[0]  # Select NPC type based on weight
+            npc = choices(self.types_npc, self.weights)[0]  # Select NPC type based on weight
             pos = self.generate_npc_position()
             self.add_npc(npc(self.game, pos=(pos[0] + 0.5, pos[1] + 0.5)))
 

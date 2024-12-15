@@ -1,6 +1,6 @@
-from npc import *
+from NPC import *
 
-class CacoDemonNPC(npc):
+class CacoDemonNPC(NPC):
 
     def __init__(self, game, path='assets/sprites/npc/caco_demon/0.png', pos=(10,6), scale=0.8, shift=0.38, animation_time=280):
         super().__init__(game, path, pos, scale, shift, animation_time)

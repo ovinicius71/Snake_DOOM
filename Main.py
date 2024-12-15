@@ -7,7 +7,7 @@ from animate_sprite import *
 from Map import *
 from raycasting import *
 from object_render import *
-from npc import *
+from NPC import *
 from NPCs import *
 from object_manage import * 
 from bfs import *
