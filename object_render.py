@@ -16,7 +16,7 @@ class object_render:
 
     def draw(self):
         self.draw_background()
-        self.render_object()
+        self.render_object() 
         self.draw_health()
 
     def draw_background(self):
