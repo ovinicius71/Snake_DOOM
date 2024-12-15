@@ -11,6 +11,8 @@ class Player:
         self.player_walk = False
         self.shot = False
         self.rel = 0
+        self.health_delay = 0
+        self.time_prev =pg.time.get_ticks()
 
     def movement(self):
         # Define os vetores de movimento
@@ -62,6 +64,7 @@ class Player:
     def update(self):
         self.movement()
         self.mouse_control()
+        self.recover_health()
 
     @property
     def pos(self):
@@ -102,3 +105,13 @@ class Player:
     def get_damage(self, damage):
         self.health -= damage
         self.game.object_render.player_damage()
+
+    def recover_health(self):
+        if self.check_recover_delay()and self.health < PLAYER_MAX_HEALTH:
+            self.health += 1
+
+    def check_recover_delay (self):
+        time_now = pg.time.get_ticks()
+        if time_now - self.time_prev > self.health_delay:
+            self.time_prev = time_now
+            return True
