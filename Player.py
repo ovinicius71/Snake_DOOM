@@ -48,12 +48,17 @@ class Player:
         new_x = self.x + dx
         new_y = self.y + dy
 
-        # Posição arredondada para detectar colisões
         grid_x, grid_y = int(new_x), int(new_y)
 
-        # Checa se a posição está em um bloco sólido
-        return (grid_x, grid_y) in self.game.map.world_map
+        node = self.game.map.bsp_tree.find_region(grid_x, grid_y)
 
+        for x in range(node.region[0], node.region[0] + node.region[2]):
+            for y in range(node.region[1], node.region[1] + node.region[3]):
+                if (x, y) in self.game.map.world_map:
+                    if (grid_x, grid_y) == (x, y):
+                        return True
+
+        return False
     def update(self):
         self.movement()
         self.mouse_control()
@@ -86,15 +91,13 @@ class Player:
     def mouse_control(self):
         mx, my = pg.mouse.get_pos()
 
-        # Recentralizar o cursor se ultrapassar os limites
         if mx < MOUSE_BORDER_LEFT or mx > MOUSE_BORDER_RIGHT:
             pg.mouse.set_pos([HALF_WIDTH, HALF_HEIGHT])
 
-        # Ajusta o movimento do mouse e atualiza o ângulo
         self.rel = pg.mouse.get_rel()[0]
         self.rel = max(-MOUSE_MAX_REL, min(MOUSE_MAX_REL, self.rel))
         self.angle += self.rel * MOUSE_SENSITIVITY * self.game.delta_time
-        self.angle %= math.tau  # Normaliza o ângulo entre 0 e 2π
+        self.angle %= math.tau 
 
     def get_damage(self, damage):
         self.health -= damage

@@ -65,7 +65,8 @@ class Game:
         self.screen.fill((20, 20, 20))       
         self.player.draw()   
         self.object_render.draw()             
-        self.weapon.draw()              
+        self.weapon.draw()    
+        self.map.draw()          
         pg.display.flip()    
 
 if __name__ == '__main__':  
