@@ -24,7 +24,7 @@ class object_manager:
         add_sprite = self.add_sprite
 
         self.num_enemies = 30  # Number of enemies to spawn
-        self.weights = [70, 20, 10]  # Weight for NPC type probabilities
+        self.weights = [20, 20, 70]  # Weight for NPC type probabilities
         self.types_npc = [CacoDemonNPC, CyberDemonNPC, SoldierNPC]  # Types of NPCs
         self.restrict_area = {(i, j) for i in range(10) for j in range(10)}  # Restricted spawn area
         self.npc_position = {}  # Positions of all NPCs
