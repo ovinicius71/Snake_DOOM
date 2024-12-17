@@ -11,8 +11,9 @@ class Player:
         self.player_walk = False
         self.shot = False
         self.rel = 0
-        self.health_delay = 0
+        self.health_delay = 50
         self.time_prev = pg.time.get_ticks()
+        self.last_damage_time = pg.time.get_ticks()
 
     def movement(self):
         sin_a = math.sin(self.angle)
@@ -104,13 +105,21 @@ class Player:
     def get_damage(self, damage):
         self.health -= damage
         self.game.object_render.player_damage()
+        self.last_damage_time = pg.time.get_ticks()
 
     def recover_health(self):
-        if self.check_recover_delay() and self.health < PLAYER_MAX_HEALTH:
-            self.health += 1
+        """Recupera a vida após 10 segundos sem receber dano."""
+        time_now = pg.time.get_ticks()
+        
+        # Verifica se passaram 10 segundos desde o último dano
+        if time_now - self.last_damage_time >= 10000:  # 10000 milissegundos = 10 segundos
+            if self.check_recover_delay() and self.health < PLAYER_MAX_HEALTH:
+                self.health += 1
 
-    def check_recover_delay (self):
+    def check_recover_delay(self):
+        """Controla o intervalo entre cada ponto de recuperação de vida."""
         time_now = pg.time.get_ticks()
         if time_now - self.time_prev > self.health_delay:
             self.time_prev = time_now
             return True
+        return False
