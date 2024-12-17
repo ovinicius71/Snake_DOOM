@@ -17,6 +17,8 @@ class NPC(AnimatedSprite):
         self.attack_accuracy = 0.20
         self.health = 100
         self.attack_damage = 1
+        self.attack_delay = 20
+        self.last_attack = pg.time.get_ticks()
         self.pain = False
         self.alive = True
         self.ray_value = False
@@ -39,10 +41,14 @@ class NPC(AnimatedSprite):
             self.y += dy
 
     def attack(self):
-        if self.animation_trigger:
-            if random() < self.attack_accuracy:
-                self.game.player.get_damage(self.attack_damage)
+        time_now = pg.time.get_ticks()
 
+        if time_now - self.last_attack >= 5000:
+            if self.animation_trigger:
+                if random() < self.attack_accuracy:
+                    self.game.player.get_damage(self.attack_damage)
+                    self.last_attack = pg.time.get_ticks()
+                    
     def movement(self):
         next_pos = self.game.bfs.get_path(self.map_pos, self.game.player.map_pos)
         if not next_pos:

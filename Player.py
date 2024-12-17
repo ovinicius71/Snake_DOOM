@@ -24,24 +24,23 @@ class Player:
         keys = pg.key.get_pressed()
         self.player_walk = False 
 
-        if keys[pg.K_w]:  # Frente
+        if keys[pg.K_w]:  
             dx += speed * cos_a
             dy += speed * sin_a
             self.player_walk = True
-        if keys[pg.K_s]:  # Para trás
+        if keys[pg.K_s]:  
             dx -= speed * cos_a
             dy -= speed * sin_a
             self.player_walk = True
-        if keys[pg.K_a]:  # Para a esquerda
+        if keys[pg.K_a]: 
             dx += speed * sin_a
             dy -= speed * cos_a
             self.player_walk = True
-        if keys[pg.K_d]:  # Para a direita
+        if keys[pg.K_d]: 
             dx -= speed * sin_a
             dy += speed * cos_a
             self.player_walk = True
 
-        # Checar colisões antes de atualizar a posição
         if not self.check_wall_collision(dx, dy):
             self.x += dx
             self.y += dy
@@ -108,16 +107,13 @@ class Player:
         self.last_damage_time = pg.time.get_ticks()
 
     def recover_health(self):
-        """Recupera a vida após 10 segundos sem receber dano."""
         time_now = pg.time.get_ticks()
         
-        # Verifica se passaram 10 segundos desde o último dano
-        if time_now - self.last_damage_time >= 10000:  # 10000 milissegundos = 10 segundos
+        if time_now - self.last_damage_time >= 10000:  
             if self.check_recover_delay() and self.health < PLAYER_MAX_HEALTH:
                 self.health += 1
 
     def check_recover_delay(self):
-        """Controla o intervalo entre cada ponto de recuperação de vida."""
         time_now = pg.time.get_ticks()
         if time_now - self.time_prev > self.health_delay:
             self.time_prev = time_now
