@@ -12,14 +12,13 @@ class Player:
         self.shot = False
         self.rel = 0
         self.health_delay = 0
-        self.time_prev =pg.time.get_ticks()
+        self.time_prev = pg.time.get_ticks()
 
     def movement(self):
-        # Define os vetores de movimento
         sin_a = math.sin(self.angle)
         cos_a = math.cos(self.angle)
         dx, dy = 0, 0
-        speed = PLAYER_SPEED * self.game.delta_time  # Ajuste baseado no tempo delta para movimento suave
+        speed = PLAYER_SPEED * self.game.delta_time  
 
         keys = pg.key.get_pressed()
         self.player_walk = False 
@@ -107,7 +106,7 @@ class Player:
         self.game.object_render.player_damage()
 
     def recover_health(self):
-        if self.check_recover_delay()and self.health < PLAYER_MAX_HEALTH:
+        if self.check_recover_delay() and self.health < PLAYER_MAX_HEALTH:
             self.health += 1
 
     def check_recover_delay (self):

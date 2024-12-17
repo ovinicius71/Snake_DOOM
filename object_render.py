@@ -8,9 +8,9 @@ class object_render:
         self.wall_texture = self.wall_texture()
         self.sky_image = self.get_texture('assets/textures/sky.png', (WIDTH, HALF_HEIGHT))
         self.sky_off = 0
-        self.digit_size = 50
-        self.digit_image = [self.get_texture(f'assets/textures/digits/{i}.png', [self.digit_size] * 2) for i in range(11)]
-        self.digit =dict(zip(map(str, range(11)), self.digit_image))
+        self.digit_size = 250
+        self.hud_health_image = [self.get_texture(f'assets/sprites/hud_life/life_and_armor_hud_{-i + self.game.player.health}.png', [self.digit_size] * 2) for i in range(13)]
+        self.digit =dict(zip(map(str, range(13)), self.hud_health_image))
         self.blood_screen = self.get_texture('assets/textures/blood_screen.png', RES)
 
 
@@ -26,12 +26,12 @@ class object_render:
         pg.draw.rect(self.screen, FLOOR_COLOR, (0, HALF_HEIGHT, WIDTH, HEIGHT))
     
     def draw_health(self):
-        health = str(self.game.player.health)
-        for i, char in enumerate(health):
-            self.screen.blit(self.digit[char], (195 + i * self.digit_size, 565))
-        if health:  # Verifica se a string não está vazia
-            self.screen.blit(self.digit['10'], (245 + i * self.digit_size, 565))
+        health = max(0, min(self.game.player.health, 12))
 
+        health_image = self.hud_health_image[-health + 13]
+
+        self.screen.blit(health_image, (195, 1150))
+        
     @staticmethod
     def get_texture(path, res=(TEXTURE_SIZE, TEXTURE_SIZE)):
         try:
@@ -39,7 +39,7 @@ class object_render:
             return pg.transform.scale(texture, res)
         except FileNotFoundError:
             print(f"Erro: File not found - {path}")
-            return pg.Surface(res)  # Retorna um placeholder em caso de erro
+            return pg.Surface(res)  
 
     def render_object(self):
         try:

@@ -6,6 +6,6 @@ class CyberDemonNPC(NPC):
         super().__init__(game, path, pos, scale, shift, animation_time)
         self.attack_dist = 6
         self.health = 350
-        self.attack_damage = 15
+        self.attack_damage = 1
         self.speed = 0.055
         self.accuracy = 0.25
