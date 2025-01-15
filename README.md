@@ -67,4 +67,8 @@ Create a Doom-inspired gaming experience using concepts from computer graphics a
 
 Contributions are welcome! Feel free to open issues or submit pull requests to improve the project.
 
+## Warning 
+
+Still working on the Linux version
+
 
