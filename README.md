@@ -38,6 +38,11 @@ Create a Doom-inspired gaming experience using concepts from computer graphics a
    python main.py
    ```
 
+## In game
+
+![Texto alternativo](Image/Captura de tela 2025-02-18 122757)
+
+
 ## Project Structure
 
 ```
