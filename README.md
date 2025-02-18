@@ -40,9 +40,9 @@ Create a Doom-inspired gaming experience using concepts from computer graphics a
 
 ## In game
 
-![Texto alternativo](Image\tela1.png)
-![Texto alternativo](Image\tela2.png)
-![Texto alternativo](Image\tela3.png)
+![Texto alternativo](Image/tela1.png)
+![Texto alternativo](Image/tela2.png)
+![Texto alternativo](Image/tela3.png)
 
 
 ## Project Structure
