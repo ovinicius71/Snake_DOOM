@@ -40,7 +40,9 @@ Create a Doom-inspired gaming experience using concepts from computer graphics a
 
 ## In game
 
-![Texto alternativo](Image/Captura de tela 2025-02-18 122757)
+![Texto alternativo](Image\tela1.png)
+![Texto alternativo](Image\tela2.png)
+![Texto alternativo](Image\tela3.png)
 
 
 ## Project Structure
@@ -71,5 +73,9 @@ Create a Doom-inspired gaming experience using concepts from computer graphics a
 ## Contributions
 
 Contributions are welcome! Feel free to open issues or submit pull requests to improve the project.
+
+## Warning 
+
+Still working on the Linux version
 
 
